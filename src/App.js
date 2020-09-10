@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import InfoBox from "./InfoBox";
+import Map from "./Map"
 
-import { FormControl, Select, MenuItem } from "@material-ui/core";
+import { FormControl, Select, MenuItem, Card, CardContent } from "@material-ui/core";
 
 function App() {
   const [coutries, setCountries] = useState([""]);
@@ -44,8 +45,10 @@ function App() {
 
   return (
     <div className="app">
+    <div className="app__left">
+
       <div className="app__header">
-        <h1>COVID-19 tracker</h1>
+        <h1>COVID-19 Tracker</h1>
         <FormControl className="app__dropdown">
           <Select variant="outlined" value={country} onChange={onCountryChange}>
             <MenuItem value="worldwide-tag-value">Worldwide</MenuItem>
@@ -61,6 +64,20 @@ function App() {
         <InfoBox title="Recovered" cases={7000} total={10000}/>
         <InfoBox title="Deaths" cases={7000} total={10000}/>
       </div>
+
+      <div className="app__map">
+        <Map />
+      </div>
+    </div>
+
+    <Card className="app__right">
+      <CardContent>
+      <h3>Live Cases by Country</h3>
+      {/* Table */}
+      <h3>Worldwide new cases</h3>
+      {/* Graph */}
+      </CardContent>
+    </Card>
     </div>
   );
 }
