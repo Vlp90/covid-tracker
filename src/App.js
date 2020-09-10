@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
+import Table from "./Table";
 
 import {
   FormControl,
@@ -15,6 +16,7 @@ function App() {
   const [coutries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide-tag-value");
   const [countryInfo, setCountryInfo] = useState({}); // empty objects
+  const [tableData, setTableData] = useState([]);
 
   // to make sure it will work with worldwide data at launch
   useEffect(() => {
@@ -47,6 +49,7 @@ function App() {
             value: country.countryInfo.iso2,
           }));
           setCountries(countries);
+          setTableData(data);
         });
     };
     getCountriesData();
@@ -120,6 +123,7 @@ function App() {
         <CardContent>
           <h3>Live Cases by Country</h3>
           {/* Table */}
+          <Table countries={tableData} />
           <h3>Worldwide new cases</h3>
           {/* Graph */}
         </CardContent>
