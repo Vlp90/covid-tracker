@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import InfoBox from "./InfoBox";
 
 import { FormControl, Select, MenuItem } from "@material-ui/core";
 
@@ -36,9 +37,9 @@ function App() {
   // change value of the country selected in the dropdown list
   const onCountryChange = async (event) => {
     // console.log(event)
-    const countryCode = event.target.value
+    const countryCode = event.target.value;
     // console.log(countryCode)
-    setCountry(countryCode)
+    setCountry(countryCode);
   };
 
   return (
@@ -53,6 +54,12 @@ function App() {
             ))}
           </Select>
         </FormControl>
+      </div>
+
+      <div className="app__stats">
+        <InfoBox title="Coronavirus Cases" cases={7000} total={10000}/>
+        <InfoBox title="Recovered" cases={7000} total={10000}/>
+        <InfoBox title="Deaths" cases={7000} total={10000}/>
       </div>
     </div>
   );
