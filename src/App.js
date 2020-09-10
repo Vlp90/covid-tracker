@@ -3,6 +3,8 @@ import "./App.css";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
 import Table from "./Table";
+import {sortData} from "./util.js"
+import LineGraph from "./LineGraph.js"
 
 import {
   FormControl,
@@ -48,8 +50,12 @@ function App() {
             name: country.country,
             value: country.countryInfo.iso2,
           }));
+
+          const sortedData = sortData(data)
+          // setTableData(data);
+          setTableData(sortedData);
           setCountries(countries);
-          setTableData(data);
+          
         });
     };
     getCountriesData();
@@ -81,7 +87,7 @@ function App() {
     <div className="app">
       <div className="app__left">
         <div className="app__header">
-          <h1>COVID-19 Tracker</h1>
+          <h1>COVID-19 TRACKER</h1>
           <FormControl className="app__dropdown">
             <Select
               variant="outlined"
@@ -121,11 +127,11 @@ function App() {
 
       <Card className="app__right">
         <CardContent>
-          <h3>Live Cases by Country</h3>
+          <h3>Last 24h Cases by Country</h3>
           {/* Table */}
           <Table countries={tableData} />
           <h3>Worldwide new cases</h3>
-          {/* Graph */}
+          <LineGraph />
         </CardContent>
       </Card>
     </div>
