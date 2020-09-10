@@ -3,47 +3,65 @@ import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 
 const options = {
-  legend: {
-    display: false,
-  },
-  elements: {
-    point: {
-      radius: 0,
+    legend: {
+      display: false,
     },
-  },
-  maintainAspectRatio: false,
-  tootlips: {
-    mode: "index",
-    intersect: false,
-    callbacks: {
-      label: function (tootlips, data) {
-        return numeral(tooltipItem.value).format("+0,0");
+    elements: {
+      point: {
+        radius: 0,
       },
     },
-  },
-  scales: {
-    xAxes: [
-      {
-        types: "times",
-        time: {
-          format: "MM/DD/YY",
-          tooltipFormat: "ll",
+    maintainAspectRatio: false,
+    tooltips: {
+      mode: "index",
+      intersect: false,
+      callbacks: {
+        label: function (tooltipItem, data) {
+          return numeral(tooltipItem.value).format("+0,0");
         },
       },
-    ],
-    yAxes: [
-      {
-        gridLines: {
-          display: false,
-        },
-        ticks: {
-          callback: function (value, index, values) {
-            return numeral(value).format("0a");
+    },
+    scales: {
+      xAxes: [
+        {
+          type: "time",
+          time: {
+            format: "MM/DD/YY",
+            tooltipFormat: "ll",
           },
         },
-      },
-    ],
-  },
+      ],
+      yAxes: [
+        {
+          gridLines: {
+            display: false,
+          },
+          ticks: {
+            // Include a dollar sign in the ticks
+            callback: function (value, index, values) {
+              return numeral(value).format("0a");
+            },
+          },
+        },
+      ],
+    },
+  };
+
+const buildChartData = (data, casesType = "cases") => {
+  const chartData = [];
+  let lastDataPoint;
+
+  for (let date in data.cases) {
+    if (lastDataPoint) {
+      let newDataPoint = {
+        x: date,
+        y: data[casesType][date] - lastDataPoint,
+      };
+      chartData.push(newDataPoint);
+    }
+    lastDataPoint = data[casesType][date];
+  }
+  return chartData;
 };
 
 //https://disease.sh/v3/covid-19/historical/all?lastdays=120
@@ -51,43 +69,36 @@ const options = {
 function LineGraph() {
   const [data, setData] = useState({});
 
-  const buildChartData = (data, casesType = "cases") => {
-    const chartData = [];
-    let lastDataPoint;
-
-    for (let date in data.cases) {
-      if (lastDataPoint) {
-        const newDataPoint = {
-          x: date,
-          y: data[casesType][date] - lastDataPoint,
-        };
-        chartData.push(newDataPoint);
-      }
-      lastDataPoint = data[casesType][date];
-    }
-    return chartData;
-  };
-
   useEffect(() => {
-    fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("DATA GRAPH", data);
-        const chartData = buildChartData(data, "cases");
-        setData(chartData);
-      });
+    const fetchData = async () => {
+      await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("DATA GRAPH", data);
+          let chartData = buildChartData(data, "cases");
+          setData(chartData);
+        });
+    };
+
+    fetchData();
   }, []);
 
   return (
     <div>
-      <Line
-        options={options}
-        data={{
-          backgroundColor: "rgba(204,16,52,0.5)",
-          color: "#CC1034",
-          datasets: [{ data: data }],
-        }}
-      />
+      {data?.length > 0 && (
+        <Line
+          options={options}
+          data={{
+            datasets: [
+              {
+                backgroundColor: "rgba(204,16,52,0.5)",
+                color: "#CC1034",
+                data: data,
+              },
+            ],
+          }}
+        />
+      )}
     </div>
   );
 }
