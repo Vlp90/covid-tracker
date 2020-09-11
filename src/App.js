@@ -26,6 +26,7 @@ function App() {
     lng: 19.5060937,
   });
   const [mapZoom, setMapZoom] = useState(3);
+  const [mapCountries, setMapCountries] = useState([]);
 
   // to make sure it will work with worldwide data at launch
   useEffect(() => {
@@ -61,6 +62,7 @@ function App() {
           const sortedData = sortData(data);
           // setTableData(data);
           setTableData(sortedData);
+          setMapCountries(data)
           setCountries(countries);
         });
     };
@@ -129,7 +131,7 @@ function App() {
         </div>
 
         <div className="app__map">
-          <Map center={mapCenter} zoom={mapZoom} />
+          <Map countries={mapCountries} center={mapCenter} zoom={mapZoom} />
         </div>
       </div>
 
