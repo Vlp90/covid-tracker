@@ -3,8 +3,10 @@ import "./App.css";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
 import Table from "./Table";
-import {sortData} from "./util.js"
-import LineGraph from "./LineGraph.js"
+import { sortData } from "./util.js";
+import LineGraph from "./LineGraph.js";
+
+import "leaflet/dist/leaflet.css";
 
 import {
   FormControl,
@@ -19,6 +21,11 @@ function App() {
   const [country, setCountry] = useState("worldwide-tag-value");
   const [countryInfo, setCountryInfo] = useState({}); // empty objects
   const [tableData, setTableData] = useState([]);
+  const [mapCenter, setMapCenter] = useState({
+    lat: 47.1817585,
+    lng: 19.5060937,
+  });
+  const [mapZoom, setMapZoom] = useState(3);
 
   // to make sure it will work with worldwide data at launch
   useEffect(() => {
@@ -51,11 +58,10 @@ function App() {
             value: country.countryInfo.iso2,
           }));
 
-          const sortedData = sortData(data)
+          const sortedData = sortData(data);
           // setTableData(data);
           setTableData(sortedData);
           setCountries(countries);
-          
         });
     };
     getCountriesData();
@@ -78,6 +84,8 @@ function App() {
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        setMapZoom(4);
       });
   };
 
@@ -121,7 +129,7 @@ function App() {
         </div>
 
         <div className="app__map">
-          <Map />
+          <Map center={mapCenter} zoom={mapZoom} />
         </div>
       </div>
 
