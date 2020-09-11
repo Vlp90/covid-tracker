@@ -22,7 +22,7 @@
   margin-bottom: 20px;
 }
 
-.app__header > h1 {
+.app__header > h1, .app__rightTitle, .app__graphTitle {
   color: gray;
 }
 

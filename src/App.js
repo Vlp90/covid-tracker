@@ -149,7 +149,7 @@ function App() {
 
       <Card className="app__right">
         <CardContent>
-          <h3>Last 24h Cases by Country</h3>
+          <h3 className='app__rightTitle'>Last 24h Cases by Country</h3>
           {/* Table */}
           <Table countries={tableData} />
           <h3 className='app__graphTitle'>Worldwide new {casesType}</h3>
