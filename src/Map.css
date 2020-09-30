@@ -46,6 +46,7 @@
 
 @media (max-width: 900px) {
     .map {
-        height: 300px;
+        overflow: hidden;
+        /* height: 300px; */
     }
 }
