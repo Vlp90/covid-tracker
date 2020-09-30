@@ -147,6 +147,8 @@ function App() {
         </div>
       </div>
 
+<div className="app__rightContainer">
+
       <Card className="app__right">
         <CardContent>
           <h3 className='app__rightTitle'>Last 24h Cases by Country</h3>
@@ -156,6 +158,7 @@ function App() {
           <LineGraph className='app__graph' casesType={casesType} />
         </CardContent>
       </Card>
+</div>
     </div>
   );
 }
